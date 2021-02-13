@@ -20,28 +20,28 @@ typedef enum block_type {
 }BLOCK_TYPE;
 
 /*----------
+ブロックの表示
+----------*/
+void display_block(BLOCK_TYPE block) {
+	switch (block) {
+	case(WALL):
+		cout << "■"; break;
+	case(BLOCK):
+		cout << "□"; break;
+	case(EMPTY):
+		cout << "　"; break;
+	default:
+		cout << "Error Happen!" << endl; exit(0);
+	}
+}
+
+/*----------
 フィールドクラス
 ----------*/
 class FIELD {
 private:
 	/* ブロックの状態を格納する配列 */
 	BLOCK_TYPE field[FIELD_WIDTH][FIELD_HEIGHT];
-
-	/*----------
-	ブロックの表示
-	----------*/
-	void display_block(BLOCK_TYPE block) {
-		switch (block) {
-		case(WALL):
-			cout << "■"; break;
-		case(BLOCK):
-			cout << "□"; break;
-		case(EMPTY):
-			cout << "　"; break;
-		default:
-			cout << "Error Happen!" << endl; exit(0);
-		}
-	}
 
 public:
 	/*----------
@@ -64,7 +64,7 @@ public:
 	/*----------
 	フィールド全体の表示
 	----------*/
-	void display() {
+	void display_field() {
 		/* 画面のクリア */
 		system("cls");
 		/* 表示 */

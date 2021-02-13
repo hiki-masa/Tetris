@@ -14,11 +14,13 @@ int main() {
 	time_t now_time = time(NULL);
 	/* ゲームオーバー判定 */
 	bool game_over = true;
+	/* ミノの作成 */
+	MINO Falling_Mino(mino_start_x, mino_start_y);
 	while (game_over) {
-		/* ミノの作成 */
-		MINO Mino(mino_start_x, mino_start_y);
+		/* 次のミノの作成 */
+		MINO Next_Mino(mino_start_x, mino_start_y);
 
-		while (Mino.is_fall()) {
+		while (Falling_Mino.is_fall()) {
 			/* キーボード操作の処理 */
 			if (_kbhit()) {
 				/* 表示用フィールドの作成 */
@@ -33,32 +35,34 @@ int main() {
 					/* 「←」を押された場合の処理 */
 				case('a'):
 				case(0x4b):
-					if (Mino.can_move(Display, Mino.x - 1, Mino.y))
-						Mino.x--;
+					if (Falling_Mino.can_move(Display, Falling_Mino.x - 1, Falling_Mino.y))
+						Falling_Mino.x--;
 					break;
 					/* 「→」を押された場合の処理 */
 				case('d'):
 				case(0x4d):
-					if (Mino.can_move(Display, Mino.x + 1, Mino.y))
-						Mino.x++;
+					if (Falling_Mino.can_move(Display, Falling_Mino.x + 1, Falling_Mino.y))
+						Falling_Mino.x++;
 					break;
 					/* 「↓」を押された場合の処理 */
 				case('s'):
 				case(0x50):
-					if (Mino.can_move(Display, Mino.x, Mino.y + 1))
-						Mino.y++;
+					if (Falling_Mino.can_move(Display, Falling_Mino.x, Falling_Mino.y + 1))
+						Falling_Mino.y++;
 					break;
 					/* 「space」を押された場合の処理 */
 				case(0x20):
-					MINO rotate = Mino;
+					MINO rotate = Falling_Mino;
 					rotate.rotate();
 					if (rotate.can_move(Display, rotate.x, rotate.y))
-						Mino.rotate();
+						Falling_Mino.rotate();
 					break;
 				}
-				/* 操作の反映および表示 */
-				Mino.add(Display);
-				Display.display();
+				/* 操作の反映 */
+				Falling_Mino.add(Display);
+				/* フィールド，次のミノの表示 */
+				Display.display_field();
+				Next_Mino.display_mino("Next");
 			}
 			/* 1秒経過 */
 			if (now_time != time(NULL)) {
@@ -67,27 +71,32 @@ int main() {
 				/* 表示用フィールドの作成 */
 				FIELD Display = Field;
 				/* 落下できる場合 */
-				if (Mino.can_move(Display, Mino.x, Mino.y + 1)) {
+				if (Falling_Mino.can_move(Display, Falling_Mino.x, Falling_Mino.y + 1)) {
 					/* ミノの落下 */
-					Mino.y++;
-					/* 結果の反映および表示 */
-					Mino.add(Display);
-					Display.display();
+					Falling_Mino.y++;
+					/* 結果の反映 */
+					Falling_Mino.add(Display);
+					/* フィールド，次のミノの表示 */
+					Display.display_field();
+					Next_Mino.display_mino("Next");
 				}
 				/* 落下出来ない場合 */
 				else {
-					if (Mino.y == mino_start_y) {
+					if (Falling_Mino.y == mino_start_y) {
 						game_over = false;
 					}
 					/* 落下中判定の上書き */
-					Mino.fall();
+					Falling_Mino.fall();
 					/* ミノをフィールドに追加 */
-					Mino.add(Field);
+					Falling_Mino.add(Field);
 					/* 列の確認 */
 					Field.delete_row();
 				}
 			}
 		}
+
+		/* 次のミノを落下対象に変更 */
+		Falling_Mino = Next_Mino;
 	}
 	cout << "Game Over" << endl;
 }

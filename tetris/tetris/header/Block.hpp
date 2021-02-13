@@ -36,46 +36,46 @@ void define_mino_shape(BLOCK_TYPE mino_shape[MINO_WIDTH][MINO_HEIGHT]) {
 	int mino_type = int(rnd() * (MINO_TYPE_MAX - 1e-6));
 	switch (mino_type) {
 	case(I):
-		mino_shape[0][0] = BLOCK;
-		mino_shape[0][1] = BLOCK;
-		mino_shape[0][2] = BLOCK;
-		mino_shape[0][3] = BLOCK;
+		mino_shape[1][0] = BLOCK;
+		mino_shape[1][1] = BLOCK;
+		mino_shape[1][2] = BLOCK;
+		mino_shape[1][3] = BLOCK;
 		break;
 	case(O):
-		mino_shape[0][0] = BLOCK;
-		mino_shape[1][0] = BLOCK;
-		mino_shape[0][1] = BLOCK;
-		mino_shape[1][1] = BLOCK;
-		break;
-	case(S):
-		mino_shape[1][0] = BLOCK;
-		mino_shape[2][0] = BLOCK;
-		mino_shape[0][1] = BLOCK;
-		mino_shape[1][1] = BLOCK;
-		break;
-	case(Z):
-		mino_shape[0][0] = BLOCK;
-		mino_shape[1][0] = BLOCK;
 		mino_shape[1][1] = BLOCK;
 		mino_shape[2][1] = BLOCK;
+		mino_shape[1][2] = BLOCK;
+		mino_shape[2][2] = BLOCK;
 		break;
-	case(J):
-		mino_shape[1][0] = BLOCK; 
-		mino_shape[1][1] = BLOCK; 
-		mino_shape[0][2] = BLOCK; 
-		mino_shape[1][2] = BLOCK; 
-		break;
-	case(L):
-		mino_shape[0][0] = BLOCK;
-		mino_shape[0][1] = BLOCK;
+	case(S):
+		mino_shape[1][1] = BLOCK;
+		mino_shape[2][1] = BLOCK;
 		mino_shape[0][2] = BLOCK;
 		mino_shape[1][2] = BLOCK;
 		break;
-	case(T):
-		mino_shape[1][0] = BLOCK;
+	case(Z):
 		mino_shape[0][1] = BLOCK;
 		mino_shape[1][1] = BLOCK;
-		mino_shape[2][1] = BLOCK;
+		mino_shape[1][2] = BLOCK;
+		mino_shape[2][2] = BLOCK;
+		break;
+	case(J):
+		mino_shape[2][0] = BLOCK; 
+		mino_shape[2][1] = BLOCK; 
+		mino_shape[1][2] = BLOCK; 
+		mino_shape[2][2] = BLOCK; 
+		break;
+	case(L):
+		mino_shape[1][0] = BLOCK;
+		mino_shape[1][1] = BLOCK;
+		mino_shape[1][2] = BLOCK;
+		mino_shape[2][2] = BLOCK;
+		break;
+	case(T):
+		mino_shape[1][1] = BLOCK;
+		mino_shape[0][2] = BLOCK;
+		mino_shape[1][2] = BLOCK;
+		mino_shape[2][2] = BLOCK;
 		break;
 	default:
 		cout << "Error Happen!" << endl;
@@ -192,6 +192,21 @@ public:
 	----------*/
 	void fall() {
 		falling = false;
+	}
+
+	/*----------
+	ミノの表示
+	----------*/
+	void display_mino(const char* mino_name) {
+		/* ミノの状態の表示 */
+		cout << mino_name << endl;
+		/* 表示 */
+		for (int x, y = 0; y < MINO_HEIGHT; y++) {
+			for (x = 0; x < MINO_WIDTH; x++) {
+				display_block(mino_shape[x][y]);
+			}
+			cout << endl;
+		}
 	}
 };
 
